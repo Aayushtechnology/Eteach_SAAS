@@ -5,8 +5,8 @@
   "type": "module",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "nodemon --exec tsx src/server.ts",
-    "start": "node tsc/src/server.js",
+    "dev": "nodemon --exec src server.ts",
+    "start": "node dist/server.js",
     "build": "tsc",
     "prod": "node dist/server.js"
   },
@@ -19,7 +19,7 @@
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
-    "mysql2": "^3.17.1",
+    "mysql2": "^3.22.3",
     "reflect-metadata": "^0.2.2",
     "sequelize-typescript": "^2.1.6"
   },

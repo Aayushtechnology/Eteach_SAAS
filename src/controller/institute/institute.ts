@@ -2,12 +2,13 @@ import { NextFunction, Request, Response } from "express";
 import sequelize from "../../database/connection.js";
 import generateRandomInsituteNumber from "../../severice/gerneateinstitueNumber.js";
 import User from "../../database/model/user.model.js";
+import { IExtendedRequest } from "../../middlware/type.js";
 // import { QueryTypes } from "sequelize-typescript";
 
 
 class InstituteController {
 
-   static async createInstitute(req: Request, res: Response) {
+   static async createInstitute(req: IExtendedRequest, res: Response,next :NextFunction) {
 
 
         const { instituteName, instituteEmail, institutePhoneNumber, instituteAddress } = req.body
@@ -54,21 +55,21 @@ await sequelize.query(`INSERT INTO institute_${instituteNumber} (instituteName, 
     instituteNumber INT UNIQUE 
     )`)
 
-    //    if (req.user) {
-    //        await sequelize.query(`INSERT INTO user_institute(userId,instituteNumber) VALUES(?,?)`, {
-    //            replacements: [req.user.id, instituteNumber]
-    //        })
+       if (req.user) {
+           await sequelize.query(`INSERT INTO user_institute(userId,instituteNumber) VALUES(?,?)`, {
+               replacements: [req.user.id, instituteNumber]
+           })
 
-           // const user =  await User.findByPk(req.user.id)
-           // user?.currentInstituteNumber = instituteNumber
-           // await user?.save()
+        //    const user =  await User.findByPk(req.user?.id)
+        //    user?.currentInstituteNumber = instituteNumber
+        //    await user?.save()
 
     //        await User.update({
     //            currentInstituteNumber: instituteNumber,
     //            role: "institute"
     //        }, {
     //            where: {
-    //                id: req.user.id
+    //                id: req.user?.id
     //            }
     //        })
     //    }
@@ -77,17 +78,18 @@ await sequelize.query(`INSERT INTO institute_${instituteNumber} (instituteName, 
     //        req.user.currentInstituteNumber = instituteNumber
     //    }
 
-       // req.user?.instituteNumber = instituteNumber; 
+    //    req.user?.instituteNumber = instituteNumber; 
     //    next()
 
+res.status(200).json({
+    message :"institute created sucessfully "
+})
+// next()
 
-
-
-    res.status(201).json({
-        message: "Institute created successfully"
-    })
+// next()
 
     }
+}
 }
 //  postmn api 
 // "instituteName": "ABC Institute",
@@ -97,4 +99,4 @@ await sequelize.query(`INSERT INTO institute_${instituteNumber} (instituteName, 
 //  "instituteVatNo": "123456789",
 //  "institutePanNo": "987654321"
 
-export default  InstituteController;
+export default InstituteController;
